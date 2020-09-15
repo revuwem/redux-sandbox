@@ -12,6 +12,8 @@ const reducer = (state = 0, action) => {
       return state + 1;
     case 'DEC':
       return state - 1;
+    case 'RANDOM':
+      return state + action.payload;
     default:
       return state;
   }
@@ -20,22 +22,35 @@ const reducer = (state = 0, action) => {
 
 const store = createStore(reducer);
 
+// Action creators
+const inc = () => ({ type: 'INC' });
+const dec = () => ({ type: 'DEC' });
+const random = (payload) => ({ type: 'RANDOM', payload });
+
 document
   .getElementById('increment')
-  .addEventListener('click', ()=>{
-    store.dispatch({type: 'INC'});
+  .addEventListener('click', () => {
+    store.dispatch(inc());
   });
 
 document
   .getElementById('decrement')
-  .addEventListener('click', ()=>{
-    store.dispatch({type: 'DEC'});
+  .addEventListener('click', () => {
+    store.dispatch(dec());
   });
 
-const update = () =>{
+document
+  .getElementById('random')
+  .addEventListener('click', () => {
+
+    const payload = Math.floor(Math.random() * 10);
+    store.dispatch(random(payload));
+  });
+
+const update = () => {
   document
-  .getElementById('counter')
-  .innerHTML = store.getState();
+    .getElementById('counter')
+    .innerHTML = store.getState();
 };
 
 store.subscribe(update);
